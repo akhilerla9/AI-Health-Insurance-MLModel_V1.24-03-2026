@@ -8,6 +8,7 @@ TestCase=r"F:\Data Science + Gen AI\UseCases\Baxter_Health_Insurance_ML-Model\Bu
 
 def processing(model,cols):
     SampleTestCase=data_cleaning(TestCase)
+    output_data=pd.read_excel(TestCase)
     X_Sample_Features,X_Sample_Labels,X_Sample_Features_copy,X_Sample_Labels_copy,=data_transform(SampleTestCase,SampleTestCase)
     # LOAD TRAINING COLUMNS
     cols = joblib.load(cols)
@@ -20,12 +21,12 @@ def processing(model,cols):
     #  KEEP SAME ORDER
     X_Sample_Features = X_Sample_Features[cols]
 
-    model_predict(X_Sample_Features, model)
+    model_predict(X_Sample_Features, model,output_data)
 
-def model_predict(X_Sample_Features,model):
+def model_predict(X_Sample_Features,model,output_data):
     Y_Sample_Predict=model.predict(X_Sample_Features)
-    X_Sample_Features['charges (Ai Generated)']=Y_Sample_Predict
-    X_Sample_Features.to_excel(r'Bussiness Input\second_sample_test_cases_output.xlsx',sheet_name='AI_Generated_Prediction', index=False)
+    output_data['charges']=Y_Sample_Predict
+    output_data.to_excel(r'Bussiness Input\second_sample_test_cases_result.xlsx',sheet_name='AI_Generated_Prediction', index=False)
     print('\n .- AI Generated data Sucessfully Saved.')
 
 def main():
